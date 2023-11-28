@@ -89,7 +89,6 @@ class SlackDataLoader:
         return userNamesById, userIdsByName        
 
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Export Slack history')
     
