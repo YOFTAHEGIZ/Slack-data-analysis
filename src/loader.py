@@ -32,9 +32,10 @@ class SlackDataLoader:
         '''
         path: path to the slack exported data folder
         '''
+        
         self.path = path
         self.channels = self.get_channels()
-        self.users = self.get_ussers()
+        self.users = self.get_users()
     
 
     def get_users(self):
@@ -45,7 +46,7 @@ class SlackDataLoader:
             users = json.load(f)
 
         return users
-    
+   
     def get_channels(self):
         '''
         write a function to get all the channels from the json file
@@ -60,6 +61,20 @@ class SlackDataLoader:
         write a function to get all the messages from a channel
         
         '''
+        # Retrieve the messages for the specified channel
+        channel_messages = []
+
+        # Iterate over the channel's JSON files and extract the messages
+        channel_directory = os.path.join(self.path, channel_name)
+        json_files = [f for f in os.listdir(channel_directory) if f.endswith('.json')]
+        for json_file in json_files:
+            json_path = os.path.join(channel_directory, json_file)
+            with open(json_path, 'r') as f:
+                messages = json.load(f)
+                channel_messages.extend(messages)
+
+        # Return the messages in a suitable data structure
+        return channel_messages
 
     # 
     def get_user_map(self):
@@ -72,13 +87,15 @@ class SlackDataLoader:
             userNamesById[user['id']] = user['name']
             userIdsByName[user['name']] = user['id']
         return userNamesById, userIdsByName        
-
-
+#data loading process
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Export Slack history')
-
+    
     
     parser.add_argument('--zip', help="Name of a zip file to import")
     args = parser.parse_args()
+    data_loader = SlackDataLoader(r'..\data\Anonymized_B6SlackExport_25Nov23\anonymized')
+    users = data_loader.get_users()
+    channels = data_loader.get_channels()
