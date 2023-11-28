@@ -87,7 +87,7 @@ class SlackDataLoader:
             userNamesById[user['id']] = user['name']
             userIdsByName[user['name']] = user['id']
         return userNamesById, userIdsByName        
-#data loading process
+
 
 
 if __name__ == "__main__":
