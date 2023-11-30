@@ -1,5 +1,6 @@
 import os
 import sys
+from src.loader import SlackDataLoader
 
 rpath = os.path.abspath('..')
 if rpath not in sys.path:
@@ -23,8 +24,8 @@ def insert_messages_into_channel(channel_name, date, messages):
     channels_collection.insert_one(channel_data)
 
 def read_files():
-    sl = SlackDataLoader()
-    js_files = sl.read_json_files()
+    sl = SlackDataLoader(__path__)
+    js_files = sl.get_channels()
 
     for file in js_files:
         for channel_name in file:
